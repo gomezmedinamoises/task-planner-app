@@ -1,4 +1,4 @@
-package com.example.task_planner_app.repository.dto
+package com.example.task_planner_app.repository.remote.dto
 
 data class LoginDto(
     val email: String,
