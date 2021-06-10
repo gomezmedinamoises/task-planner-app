@@ -4,11 +4,10 @@ import com.example.task_planner_app.repository.remote.dto.UserDto
 import retrofit2.Response
 import retrofit2.http.*
 
-
 interface UserService {
 
     @POST("users")
-    suspend fun create(@Body userDto: UserDto): Response<UserDto>
+    suspend fun createUser(@Body userDto: UserDto): Response<UserDto>
 
     @GET("users")
     suspend fun getUsers(): Response<List<UserDto>>

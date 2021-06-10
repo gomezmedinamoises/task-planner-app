@@ -4,6 +4,8 @@ import com.example.task_planner_app.repository.remote.dto.TaskDto
 import retrofit2.Response
 import retrofit2.http.*
 
+/**
+ * Methods with call to API */
 interface TaskService {
 
     @POST("tasks")
@@ -16,7 +18,7 @@ interface TaskService {
     suspend fun findTaskById(@Path("id") id:String): Response<TaskDto>
 
     @PUT("tasks/{id}")
-    suspend fun updateTask(@Path("id")id: String, @Body taskDto: TaskDto):Response<TaskDto>
+    suspend fun updateTask(@Path("id") id: String, @Body taskDto: TaskDto): Response<TaskDto>
 
     @DELETE("tasks/{id}")
     suspend fun deleteTask(@Path("id") id:String): Response<TaskDto>

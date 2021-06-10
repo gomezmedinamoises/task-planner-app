@@ -1,6 +1,7 @@
 package com.example.task_planner_app.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,7 +11,6 @@ import com.example.task_planner_app.repository.remote.dto.TaskDto
 import com.example.task_planner_app.repository.remote.dto.UserDto
 import com.example.task_planner_app.repository.repo.TaskRepository
 import com.example.task_planner_app.repository.repo.UserRepository
-import com.example.task_planner_app.storage.Storage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,20 +18,24 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
-    private val storage: Storage,
     private val userRepository: UserRepository,
     private val taskRepository: TaskRepository
 ) : ViewModel() {
 
-    val user: User? = null
-    val task: Task? = null
+    //val user: User? = null
+    //val task: Task? = null
+
+    private val _taskList: MutableLiveData<List<TaskDto>> = MutableLiveData<List<TaskDto>>()
+    val taskList : LiveData<List<TaskDto>> get() = _taskList
+
     val successLiveData = MutableLiveData<Boolean>()
 
     // User functions
 
-    fun createUser() {
+    fun createUser(id: String, fullName: String, email: String, passwordHash: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = userRepository.userService.create(UserDto("123", "Moises Gomez", "moises@mail.com", "123456789"))
+            val response =
+                userRepository.userService.createUser(UserDto(id, fullName, email, passwordHash))
             if (response.isSuccessful) {
                 val user = response.body()!!
                 Log.d("DEBUG", "Create new user: ${user.fullName}")
@@ -44,9 +48,9 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun findUserById() {
+    fun findUserById(id: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = userRepository.userService.findUserById("60a2f73ebd44094e98397def")
+            val response = userRepository.userService.findUserById(id)
             if (response.isSuccessful) {
                 val user = response.body()!!
                 Log.d("Developer", "userDto: ${user.fullName}")
@@ -74,11 +78,11 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun updateUser() {
+    fun updateUser(id: String, userDto: UserDto) {
         viewModelScope.launch(Dispatchers.IO) {
             val response = userRepository.userService.updateUser(
-                "60ac4278cc818c794d63c264",
-                UserDto("", "Moises David Gomez", "moisesdavid@mail.com", "1234567"))
+                id, userDto
+            )
             if (response.isSuccessful) {
                 val user = response.body()!!
                 Log.d("DEBUG", "User updated: ${user.fullName}")
@@ -91,9 +95,9 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun deleteUser() {
+    fun deleteUser(id: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = userRepository.userService.deleteUser("60ac4278cc818c794d63c264")
+            val response = userRepository.userService.deleteUser(id)
             if (response.isSuccessful) {
                 val user = response.body()!!
                 Log.d("DEBUG", "User deleted: ${user.fullName}")
@@ -107,15 +111,12 @@ class MainActivityViewModel @Inject constructor(
 
     // Task functions
 
-    fun createTask() {
+    fun createTask(description: String, responsible: String, date: String, status: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val response = taskRepository.taskService.createTask(
                 TaskDto(
-                "123",
-                "This is my first and special ask",
-                "Moises Gomez",
-                "Pending",
-                "12/12/2021")
+                    "123", description, responsible, date, status
+                )
             )
             if (response.isSuccessful) {
                 val task = response.body()!!
@@ -129,9 +130,9 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun findTaskById() {
+    fun findTaskById(id: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = taskRepository.taskService.findTaskById("6094445ad78fc32e35aaf752")
+            val response = taskRepository.taskService.findTaskById(id)
             if (response.isSuccessful) {
                 val task = response.body()!!
                 Log.d("DEBUG", "Find task by id: ${task.id}")
@@ -144,33 +145,43 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
+    /*fun getTaskList(taskAdapter: TaskAdapter) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = taskRepository.taskService.getTasks()
+            if (response.isSuccessful) {
+                taskAdapter.updateTaskList(response.body()!!)
+            }
+        }
+    }*/
+
+    
+
     fun getTasks() {
         viewModelScope.launch(Dispatchers.IO) {
             val response = taskRepository.taskService.getTasks()
-            if(response.isSuccessful){
-                val task = response.body()!!
-                Log.d("DEBUG", "Get Task: $task")
-                successLiveData.postValue(true)
-                taskRepository.taskDao.getAllTasks()
-            }else{
+
+            if (response.isSuccessful) {
+
+                val tasksReceived : List<TaskDto> = response.body() ?: ArrayList<TaskDto>()
+
+                _taskList.postValue(tasksReceived)
+
+            } else {
                 response.errorBody()
                 successLiveData.postValue(false)
             }
         }
     }
 
-    fun updateTask() {
+    fun updateTask(id: String, taskDto: TaskDto) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = taskRepository.taskService.updateTask("60ac463fcc818c794d63c265",
-                TaskDto("3123123","A new and difficult  task","Jeremias",
-                    "12-12-2021","Incomplete")
-            )
-            if(response.isSuccessful){
+            val response = taskRepository.taskService.updateTask(id, taskDto)
+            if (response.isSuccessful) {
                 val task = response.body()!!
                 Log.d("DEBUG", "Updated task: $task")
                 successLiveData.postValue(true)
                 taskRepository.taskDao.saveTask(Task(task))
-            }else{
+            } else {
                 response.errorBody()
                 successLiveData.postValue(false)
             }
@@ -178,9 +189,9 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    private fun deleteTask() {
+    private fun deleteTask(id: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = taskRepository.taskService.deleteTask("6094445ad78fc32e35aaf752")
+            val response = taskRepository.taskService.deleteTask(id)
             if (response.isSuccessful) {
                 val task = response.body()!!
                 Log.d("DEBUG", "Deleted Task: $task")

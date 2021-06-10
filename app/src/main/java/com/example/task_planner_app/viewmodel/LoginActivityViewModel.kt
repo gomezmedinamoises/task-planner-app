@@ -20,9 +20,9 @@ class LoginActivityViewModel @Inject constructor(
 
     val successLiveData = MutableLiveData<Boolean>()
 
-    fun auth() {
+    fun auth(email: String, password: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = authService.auth(LoginDto("jeremias@mail.com", "password"))
+            val response = authService.auth(LoginDto(email, password))
             if (response.isSuccessful) {
                 val tokenDto = response.body()!!
                 Log.d("DEBUG", "tokenDto: $tokenDto")

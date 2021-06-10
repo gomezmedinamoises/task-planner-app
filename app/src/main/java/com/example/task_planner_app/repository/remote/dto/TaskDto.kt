@@ -5,5 +5,5 @@ data class TaskDto(
     val description: String,
     val responsible: String,
     val date: String,
-    val status: String,
+    val status: String
 )

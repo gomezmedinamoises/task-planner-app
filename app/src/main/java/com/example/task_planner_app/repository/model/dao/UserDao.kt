@@ -2,6 +2,7 @@ package com.example.task_planner_app.repository.model.dao
 
 import androidx.room.*
 import com.example.task_planner_app.repository.model.entity.User
+import dagger.Provides
 
 @Dao
 interface UserDao {
@@ -9,7 +10,7 @@ interface UserDao {
     @Query("SELECT * FROM user")
     fun getAllUsers(): List<User>
 
-    @Query("SELECT * FROM user WHERE id=:id")
+    @Query("SELECT * FROM user WHERE id = :id")
     fun findUserById(id: String): User?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

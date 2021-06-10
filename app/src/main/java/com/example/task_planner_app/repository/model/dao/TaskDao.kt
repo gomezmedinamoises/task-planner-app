@@ -1,5 +1,6 @@
 package com.example.task_planner_app.repository.model.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.task_planner_app.repository.model.entity.Task
 
@@ -7,7 +8,7 @@ import com.example.task_planner_app.repository.model.entity.Task
 interface TaskDao {
 
     @Query("SELECT * FROM task")
-    fun getAllTasks(): List<Task>
+    fun getAllTasks(): LiveData<List<Task>>
 
     @Query("SELECT * FROM task WHERE id = :id")
     fun findTaskById(id: String): Task

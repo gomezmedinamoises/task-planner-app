@@ -12,7 +12,7 @@ data class Task(
     val description: String,
     val responsible: String,
     val date: String,
-    val status: String,
+    val status: String
 ) {
     constructor(taskDto: TaskDto): this(
         0,
@@ -20,6 +20,5 @@ data class Task(
         taskDto.description,
         taskDto.responsible,
         taskDto.date,
-        taskDto.status
-    )
+        taskDto.status)
 }

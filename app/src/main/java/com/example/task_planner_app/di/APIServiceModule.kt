@@ -24,24 +24,6 @@ object APIServiceModule {
 
     @Provides
     @Singleton
-    fun provideAuthService(retrofit: Retrofit): AuthService {
-        return retrofit.create(AuthService::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideUserService(retrofit: Retrofit): UserService {
-        return retrofit.create(UserService::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideTaskService(retrofit: Retrofit): TaskService {
-        return retrofit.create(TaskService::class.java)
-    }
-
-    @Provides
-    @Singleton
     fun provideRetrofit(storage: Storage): Retrofit {
         val builder = Retrofit.Builder()
             .baseUrl(BuildConfig.API_BASE_URL)
@@ -59,4 +41,24 @@ object APIServiceModule {
             .connectTimeout(1, TimeUnit.MINUTES).build()
         return builder.client(okHttpClient).build()
     }
+
+    @Provides
+    @Singleton
+    fun provideAuthService(retrofit: Retrofit): AuthService {
+        return retrofit.create(AuthService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserService(retrofit: Retrofit): UserService {
+        return retrofit.create(UserService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTaskService(retrofit: Retrofit): TaskService {
+        return retrofit.create(TaskService::class.java)
+    }
+
+
 }
