@@ -56,7 +56,7 @@ class HomeFragment : Fragment() {
 
         viewModel.taskList.observe(viewLifecycleOwner, {
             // validate is task list is not empty
-            if(it.isNullOrEmpty()){
+            if(it.isNotEmpty()){
                 createHomeList(taskList = it)
             } else {
                 Toast.makeText(requireContext(),"Empty List", Toast.LENGTH_LONG).show()
@@ -79,13 +79,27 @@ class HomeFragment : Fragment() {
 
     private fun createHomeList(taskList : List<TaskDto>){
         // create adapter instance and set it to taskAdapter class variable
-        //taskAdapter = TaskAdapter(taskList = taskList)
+        taskAdapter = TaskAdapter(taskList = taskList)
+
+        // prepare recycler view
+        prepareRecyclerView()
 
         // set adapter with tasks to recyclerView
-        //binding.recyclerView.adapter = taskAdapter
         binding.recyclerView.apply {
             adapter = taskAdapter
         }
+    }
+
+    private fun prepareRecyclerView(){
+        // Create linear layout
+        val linearLayoutManager = LinearLayoutManager(activity)
+        linearLayoutManager.apply {
+            reverseLayout = true
+            stackFromEnd = true
+        }
+        // Set linear layout to recyclerView
+        binding.recyclerView.layoutManager = linearLayoutManager
+
     }
 
 }

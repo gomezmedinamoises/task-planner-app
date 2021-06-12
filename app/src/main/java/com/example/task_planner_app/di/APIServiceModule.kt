@@ -1,6 +1,5 @@
 package com.example.task_planner_app.di
 
-import com.example.task_planner_app.BuildConfig
 import com.example.task_planner_app.network.AuthInterceptor
 import com.example.task_planner_app.repository.remote.auth.AuthService
 import com.example.task_planner_app.repository.remote.task.TaskService
@@ -26,7 +25,7 @@ object APIServiceModule {
     @Singleton
     fun provideRetrofit(storage: Storage): Retrofit {
         val builder = Retrofit.Builder()
-            .baseUrl(BuildConfig.API_BASE_URL)
+            .baseUrl(com.example.task_planner_app.BuildConfig.API_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
 

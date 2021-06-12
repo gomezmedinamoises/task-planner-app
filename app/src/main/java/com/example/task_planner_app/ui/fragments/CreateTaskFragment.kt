@@ -32,8 +32,11 @@ class CreateTaskFragment : Fragment() {
             val date = binding.insertDateTask.text.toString()
             val status = binding.insertStatusTask.text.toString()
             validateCreateTaskFields(description, responsible, date, status)
+            viewModel.successLiveData.observe(viewLifecycleOwner, {
+                goHomeFragmentFromCreateTaskFragment()
+                FancyToast.makeText(activity, "The task was created successfully", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, true).show()
+            })
             viewModel.createTask(description, responsible, date, status)
-            goHomeFragmentFromCreateTaskFragment()
         }
 
         return binding.root
@@ -43,9 +46,12 @@ class CreateTaskFragment : Fragment() {
         findNavController().navigate(R.id.action_createTaskFragment_to_homeFragment)
     }
 
-    private fun validateCreateTaskFields(description: String, responsible: String, date: String, status: String) {
-        if (description.isEmpty() && responsible.isEmpty() && date.isEmpty() && status.isEmpty()) {
+    private fun validateCreateTaskFields(description: String, responsible: String, date: String, status: String): Boolean {
+        if (description.isEmpty() || responsible.isEmpty() || date.isEmpty() || status.isEmpty()) {
             FancyToast.makeText(activity, "Please, fill all fields", FancyToast.LENGTH_LONG, FancyToast.ERROR, true).show()
+            return false
+        } else {
+            return true
         }
     }
 }

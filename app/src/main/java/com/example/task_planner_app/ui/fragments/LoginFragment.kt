@@ -32,13 +32,18 @@ class LoginFragment : Fragment() {
         binding.buttonLogin.setOnClickListener {
             val email = binding.insertEmailLogin.text.toString()
             val password = binding.insertPasswordLogin.text.toString()
-            validateLoginFields(email, password)
+            val loginFieldsValidationResult = validateLoginFields(email, password)
+            if(loginFieldsValidationResult){
+                viewModel.auth(email, password)
+            } else {
+                println("Pending fields")
+            }
             viewModel.successLiveData.observe(viewLifecycleOwner, { loginSuccessful ->
                 if (loginSuccessful) {
                     goMainActivityFromLoginActivity()
                 }
             })
-            viewModel.auth(email, password)
+
         }
 
         binding.textRegister.setOnClickListener {
