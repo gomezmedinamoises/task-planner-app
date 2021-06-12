@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.task_planner_app.R
 import com.example.task_planner_app.repository.model.entity.Task
 import com.example.task_planner_app.repository.remote.dto.TaskDto
+import kotlinx.android.synthetic.main.task_row.view.*
 
 class TaskAdapter(
     private var taskList: List<TaskDto>
@@ -26,9 +27,11 @@ class TaskAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val task = taskList[position]
-        holder.taskDescription.text = task.description
-        holder.taskResponsible.text = task.responsible
-        holder.taskStatus.text = task.status
+        holder.itemView.apply {
+            description_task.text = task.description
+            responsible_task.text = task.responsible
+            status_task.text = task.status
+        }
     }
 
     override fun getItemCount(): Int {

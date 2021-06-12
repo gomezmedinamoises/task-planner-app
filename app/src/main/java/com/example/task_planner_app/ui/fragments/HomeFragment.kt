@@ -20,7 +20,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var taskAdapter : TaskAdapter
+    //private lateinit var taskAdapter : TaskAdapter
+    lateinit var taskAdapter: TaskAdapter
     //private val taskAdapter = TaskAdapter()
     private val viewModel by viewModels<MainActivityViewModel>()
 
@@ -58,7 +59,7 @@ class HomeFragment : Fragment() {
             if(it.isNullOrEmpty()){
                 createHomeList(taskList = it)
             } else {
-                Toast.makeText(requireContext(),"Empty LISt", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(),"Empty List", Toast.LENGTH_LONG).show()
             }
 
         })
@@ -78,10 +79,13 @@ class HomeFragment : Fragment() {
 
     private fun createHomeList(taskList : List<TaskDto>){
         // create adapter instance and set it to taskAdapter class variable
-        taskAdapter = TaskAdapter(taskList = taskList)
+        //taskAdapter = TaskAdapter(taskList = taskList)
 
         // set adapter with tasks to recyclerView
-        binding.recyclerView.adapter = taskAdapter
+        //binding.recyclerView.adapter = taskAdapter
+        binding.recyclerView.apply {
+            adapter = taskAdapter
+        }
     }
 
 }

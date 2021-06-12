@@ -13,7 +13,6 @@
     <string name="button_register">Register</string>
     <string name="text_login">Do you have an account? Click here</string>
     <string name="text_register">Do you need and account? Click here</string>
-    <string name="description_text">Description: %s</string>
     <string name="description">Description </string>
     <string name="todo">TODO</string>
     <string name="create_task">Create task</string>
