@@ -19,4 +19,6 @@
     <string name="responsible">Responsible</string>
     <string name="date">Date</string>
     <string name="status">Status</string>
+    <string name="delete">Delete</string>
+    <string name="update">Update</string>
 </resources>

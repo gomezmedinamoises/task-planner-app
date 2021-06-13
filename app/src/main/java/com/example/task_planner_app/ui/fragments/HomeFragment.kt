@@ -13,6 +13,7 @@ import com.example.task_planner_app.R
 import com.example.task_planner_app.databinding.FragmentHomeBinding
 import com.example.task_planner_app.repository.remote.dto.TaskDto
 import com.example.task_planner_app.ui.adapter.TaskAdapter
+import com.example.task_planner_app.ui.listeners.OnDeleteListener
 import com.example.task_planner_app.viewmodel.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -48,9 +49,11 @@ class HomeFragment : Fragment() {
      */
     private fun initObservers(){
         // Observe
-        viewModel.successLiveData.observe(viewLifecycleOwner, {
-            if (it) {
-
+        viewModel.successDeleteLiveData.observe(viewLifecycleOwner, {
+            // It.first = first argument from successDeleteLiveData (Boolean)
+            // It.second = second argument from successDeleteLiveData (Int)
+            if (it.first) {
+                taskAdapter.removeItemFromTaskList(it.second)
             }
         })
 
@@ -79,7 +82,7 @@ class HomeFragment : Fragment() {
 
     private fun createHomeList(taskList : List<TaskDto>){
         // create adapter instance and set it to taskAdapter class variable
-        taskAdapter = TaskAdapter(taskList = taskList)
+        prepareTaskAdapter(taskList)
 
         // prepare recycler view
         prepareRecyclerView()
@@ -87,6 +90,15 @@ class HomeFragment : Fragment() {
         // set adapter with tasks to recyclerView
         binding.recyclerView.apply {
             adapter = taskAdapter
+        }
+    }
+
+    private fun prepareTaskAdapter(taskList: List<TaskDto>) {
+        taskAdapter = TaskAdapter(taskList = taskList, navController = findNavController())
+        taskAdapter.onDeleteListener = object : OnDeleteListener{
+            override fun onDeletePressed(id: String, itemViewPosition: Int) {
+                viewModel.deleteTask(id, itemViewPosition)
+            }
         }
     }
 

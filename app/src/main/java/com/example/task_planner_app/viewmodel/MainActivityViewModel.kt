@@ -30,6 +30,10 @@ class MainActivityViewModel @Inject constructor(
 
     val successLiveData = MutableLiveData<Boolean>()
 
+    // First value = Delete was successful or not
+    // Second value = Contains the position in the home view recycler view to be deleted when it is successful
+    val successDeleteLiveData = MutableLiveData<Pair<Boolean, Int>>()
+
     // User functions
 
     fun createUser(id: String, fullName: String, email: String, passwordHash: String) {
@@ -95,17 +99,11 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun deleteUser(id: String) {
+    fun deleteTask(id: String, itemViewPosition : Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = userRepository.userService.deleteUser(id)
-            if (response.isSuccessful) {
-                val user = response.body()!!
-                Log.d("DEBUG", "User deleted: ${user.fullName}")
-                successLiveData.postValue(true)
-                userRepository.userDao.deleteUser(User(user))
-            } else {
-                response.errorBody()
-            }
+            val response = taskRepository.taskService.deleteTask(id)
+                Log.d("DEBUG", "Task deleted: $response")
+                successDeleteLiveData.postValue(Pair(true, itemViewPosition))
         }
     }
 
@@ -180,7 +178,7 @@ class MainActivityViewModel @Inject constructor(
                 val task = response.body()!!
                 Log.d("DEBUG", "Updated task: $task")
                 successLiveData.postValue(true)
-                taskRepository.taskDao.saveTask(Task(task))
+                // taskRepository.taskDao.saveTask(Task(task))
             } else {
                 response.errorBody()
                 successLiveData.postValue(false)
@@ -189,18 +187,4 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    private fun deleteTask(id: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = taskRepository.taskService.deleteTask(id)
-            if (response.isSuccessful) {
-                val task = response.body()!!
-                Log.d("DEBUG", "Deleted Task: $task")
-                successLiveData.postValue(true)
-                taskRepository.taskDao.deleteTask(Task(task))
-            } else {
-                response.errorBody()
-                successLiveData.postValue(false)
-            }
-        }
-    }
 }
