@@ -52,63 +52,6 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun findUserById(id: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = userRepository.userService.findUserById(id)
-            if (response.isSuccessful) {
-                val user = response.body()!!
-                Log.d("Developer", "userDto: ${user.fullName}")
-                successLiveData.postValue(true)
-                userRepository.userDao.findUserById(user.id)
-            } else {
-                response.errorBody()
-                successLiveData.postValue(false)
-            }
-        }
-    }
-
-    fun getUsers() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = userRepository.userService.getUsers()
-            if (response.isSuccessful) {
-                val user = response.body()!!
-                Log.d("DEBUG", "Get userId: $user")
-                successLiveData.postValue(true)
-                userRepository.userDao.getAllUsers()
-            } else {
-                response.errorBody()
-                successLiveData.postValue(false)
-            }
-        }
-    }
-
-    fun updateUser(id: String, userDto: UserDto) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = userRepository.userService.updateUser(
-                id, userDto
-            )
-            if (response.isSuccessful) {
-                val user = response.body()!!
-                Log.d("DEBUG", "User updated: ${user.fullName}")
-                successLiveData.postValue(true)
-                userRepository.userDao.saveUser(User(user))
-            } else {
-                response.errorBody()
-                successLiveData.postValue(false)
-            }
-        }
-    }
-
-    fun deleteTask(id: String, itemViewPosition : Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = taskRepository.taskService.deleteTask(id)
-                Log.d("DEBUG", "Task deleted: $response")
-                successDeleteLiveData.postValue(Pair(true, itemViewPosition))
-        }
-    }
-
-    // Task functions
-
     fun createTask(description: String, responsible: String, date: String, status: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val response = taskRepository.taskService.createTask(
@@ -128,42 +71,12 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun findTaskById(id: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = taskRepository.taskService.findTaskById(id)
-            if (response.isSuccessful) {
-                val task = response.body()!!
-                Log.d("DEBUG", "Find task by id: ${task.id}")
-                successLiveData.postValue(true)
-                taskRepository.taskDao.findTaskById(task.id)
-            } else {
-                response.errorBody()
-                successLiveData.postValue(false)
-            }
-        }
-    }
-
-    /*fun getTaskList(taskAdapter: TaskAdapter) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = taskRepository.taskService.getTasks()
-            if (response.isSuccessful) {
-                taskAdapter.updateTaskList(response.body()!!)
-            }
-        }
-    }*/
-
-    
-
     fun getTasks() {
         viewModelScope.launch(Dispatchers.IO) {
             val response = taskRepository.taskService.getTasks()
-
             if (response.isSuccessful) {
-
                 val tasksReceived : List<TaskDto> = response.body() ?: ArrayList<TaskDto>()
-
                 _taskList.postValue(tasksReceived)
-
             } else {
                 response.errorBody()
                 successLiveData.postValue(false)
@@ -178,13 +91,19 @@ class MainActivityViewModel @Inject constructor(
                 val task = response.body()!!
                 Log.d("DEBUG", "Updated task: $task")
                 successLiveData.postValue(true)
-                // taskRepository.taskDao.saveTask(Task(task))
+                taskRepository.taskDao.saveTask(Task(task))
             } else {
                 response.errorBody()
                 successLiveData.postValue(false)
             }
-
         }
     }
 
+    fun deleteTask(id: String, itemViewPosition : Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = taskRepository.taskService.deleteTask(id)
+            Log.d("DEBUG", "Task deleted: $response")
+            successDeleteLiveData.postValue(Pair(true, itemViewPosition))
+        }
+    }
 }
