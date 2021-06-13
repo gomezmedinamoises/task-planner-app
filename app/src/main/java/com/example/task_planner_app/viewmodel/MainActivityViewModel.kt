@@ -22,7 +22,7 @@ class MainActivityViewModel @Inject constructor(
     private val taskRepository: TaskRepository
 ) : ViewModel() {
 
-    //val user: User? = null
+    // val user: User? = null
     //val task: Task? = null
 
     private val _taskList: MutableLiveData<List<TaskDto>> = MutableLiveData<List<TaskDto>>()
