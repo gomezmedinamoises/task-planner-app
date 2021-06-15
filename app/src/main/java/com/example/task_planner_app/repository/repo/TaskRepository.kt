@@ -8,14 +8,4 @@ import javax.inject.Inject
 class TaskRepository @Inject constructor(
     val taskService: TaskService,
     val taskDao: TaskDao
-) /*{
-    suspend fun syncData() {
-        val response = taskService.getTasks()
-        if (response.isSuccessful) {
-            val taskList = response.body()!!
-            taskList.forEach { taskDto ->
-                taskDao.saveTask(Task(taskDto))
-            }
-        }
-    }
-}*/
+)

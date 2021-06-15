@@ -31,8 +31,6 @@ class MainActivityViewModel @Inject constructor(
     // Second value = Contains the position in the home view recycler view to be deleted when it is successful
     val successDeleteLiveData = MutableLiveData<Pair<Boolean, Int>>()
 
-    // User functions
-
     fun createUser(id: String, fullName: String, email: String, passwordHash: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val response =
