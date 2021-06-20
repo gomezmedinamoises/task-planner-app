@@ -1,5 +1,6 @@
 package com.example.task_planner_app.ui.fragments
 
+import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.task_planner_app.R
 import com.example.task_planner_app.databinding.FragmentCreateTaskBinding
 import com.example.task_planner_app.ui.dialog.DatePickerFragment
+import com.example.task_planner_app.utils.Common
 import com.example.task_planner_app.viewmodel.MainActivityViewModel
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,6 +24,7 @@ import java.util.*
 @AndroidEntryPoint
 class CreateTaskFragment : Fragment() {
 
+    private var loadingDialog : Dialog? = null
     private lateinit var binding: FragmentCreateTaskBinding
     private val viewModel by viewModels<MainActivityViewModel>()
 
@@ -60,15 +63,38 @@ class CreateTaskFragment : Fragment() {
             val responsible = binding.insertResponsibleTask.text.toString()
             val date = binding.insertDateTask.text.toString()
             val status = binding.insertStatusTask.selectedItem.toString()
-            validateCreateTaskFields(description, responsible, date, status)
-            viewModel.successLiveData.observe(viewLifecycleOwner, {
-                goHomeFragmentFromCreateTaskFragment()
-                FancyToast.makeText(activity, "The task was created successfully", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, true).show()
-            })
-            viewModel.createTask(description, responsible, date, status)
+            val createTaskValidation = validateCreateTaskFields(description, responsible, date, status)
+            if (createTaskValidation) {
+                binding.fabSaveTask.visibility = View.GONE
+                showLoading()
+                viewModel.createTask(description, responsible, date, status)
+                viewModel.successLiveData.observe(viewLifecycleOwner, { taskCreatedSuccessfuly ->
+                    if (taskCreatedSuccessfuly) {
+                        hideLoading()
+                        FancyToast.makeText(activity, "The task was created successfully",
+                            FancyToast.LENGTH_LONG, FancyToast.SUCCESS, true).show()
+                        goHomeFragmentFromCreateTaskFragment()
+                    }
+                })
+            } else {
+                FancyToast.makeText(activity, "Please, insert all fields",
+                    FancyToast.LENGTH_LONG, FancyToast.ERROR, true).show()
+            }
         }
 
         return binding.root
+    }
+
+    private fun hideLoading() {
+        loadingDialog?.let {
+            if (it.isShowing)
+                it.cancel()
+        }
+    }
+
+    private fun showLoading() {
+        hideLoading()
+        loadingDialog = Common.showLoadingDialog(requireContext())
     }
 
     private fun showDatePickerDialog() {

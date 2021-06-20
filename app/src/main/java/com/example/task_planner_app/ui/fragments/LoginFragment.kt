@@ -1,5 +1,6 @@
 package com.example.task_planner_app.ui.fragments
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import com.example.task_planner_app.R
 import com.example.task_planner_app.databinding.FragmentLoginBinding
 import com.example.task_planner_app.ui.main.LoginActivity
 import com.example.task_planner_app.ui.main.MainActivity
+import com.example.task_planner_app.utils.Common
 import com.example.task_planner_app.viewmodel.LoginActivityViewModel
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,6 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
 
+    private var loadingDialog : Dialog? = null
     private lateinit var binding: FragmentLoginBinding
     private val viewModel by viewModels<LoginActivityViewModel>()
 
@@ -34,9 +37,12 @@ class LoginFragment : Fragment() {
             val password = binding.insertPasswordLogin.text.toString()
             val loginFieldsValidationResult = validateLoginFields(email, password)
             if (loginFieldsValidationResult) {
+                binding.buttonLogin.visibility = View.GONE
+                showLoading()
                 viewModel.auth(email, password)
                 viewModel.successLiveData.observe(viewLifecycleOwner, { loginSuccessful ->
                     if (loginSuccessful) {
+                        hideLoading()
                         FancyToast.makeText(activity, "Login success!",
                             FancyToast.LENGTH_LONG, FancyToast.SUCCESS, true).show()
                         goMainActivityFromLoginActivity()
@@ -55,6 +61,18 @@ class LoginFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun hideLoading() {
+        loadingDialog?.let {
+            if (it.isShowing)
+                it.cancel()
+        }
+    }
+
+    private fun showLoading() {
+        hideLoading()
+        loadingDialog = Common.showLoadingDialog(requireContext())
     }
 
     private fun goMainActivityFromLoginActivity() {
