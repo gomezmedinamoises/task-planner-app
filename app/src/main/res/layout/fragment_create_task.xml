@@ -5,71 +5,107 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/card_background"
     tools:context=".ui.fragments.CreateTaskFragment">
 
-    <EditText
-        android:id="@+id/insert_description_task"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginBottom="24dp"
-        android:ems="10"
-        android:inputType="text"
-        android:maxLines="5"
-        android:hint="@string/description"
-        android:fontFamily="@font/nunito_sans"
+    <TextView
+        android:id="@+id/create_task_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/caveat_brush"
+        android:text="@string/create_a_task"
         android:textColor="@color/text_color"
-        app:layout_constraintBottom_toTopOf="@+id/insert_responsible_task"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/insert_description_task_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/insert_description_task_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="175dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        app:counterEnabled="true"
+        app:counterMaxLength="300"
+        app:layout_constraintBottom_toTopOf="@+id/insert_responsible_task_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        android:autofillHints="" />
+        app:startIconDrawable="@drawable/ic_write">
 
-    <EditText
-        android:id="@+id/insert_responsible_task"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/insert_description_task"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:fontFamily="@font/nunito_sans"
+            android:gravity="start"
+            android:hint="@string/description"
+            android:inputType="text"
+            android:maxLines="5"
+            android:textColor="@color/text_color" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/insert_responsible_task_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginBottom="24dp"
-        android:ems="10"
-        android:inputType="text"
-        android:hint="@string/responsible"
-        android:fontFamily="@font/nunito_sans"
-        android:textColor="@color/text_color"
-        app:layout_constraintBottom_toTopOf="@+id/insert_date_task"
+        app:counterEnabled="true"
+        app:counterMaxLength="30"
+        app:startIconDrawable="@drawable/ic_user"
+        app:layout_constraintBottom_toTopOf="@+id/insert_date_task_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        android:autofillHints="" />
+        app:layout_constraintStart_toStartOf="parent">
 
-    <EditText
-        android:id="@+id/insert_date_task"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/insert_responsible_task"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nunito_sans"
+            android:hint="@string/responsible"
+            android:inputType="text"
+            android:textColor="@color/text_color" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/insert_date_task_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginBottom="24dp"
-        android:ems="10"
-        android:inputType="date"
-        android:hint="@string/date"
-        android:fontFamily="@font/nunito_sans"
-        android:textColor="@color/text_color"
-        app:layout_constraintBottom_toTopOf="@+id/insert_status_task"
+        app:counterEnabled="true"
+        app:counterMaxLength="30"
+        app:startIconDrawable="@drawable/ic_calendar"
+        app:layout_constraintBottom_toTopOf="@+id/insert_status_task_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        android:autofillHints="" />
+        app:layout_constraintStart_toStartOf="parent">
 
-    <EditText
-        android:id="@+id/insert_status_task"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/insert_date_task"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nunito_sans"
+            android:hint="@string/date"
+            android:inputType="date"
+            android:focusable="false"
+            android:clickable="true"
+            android:maxLines="1"
+            android:textColor="@color/text_color" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/insert_status_task_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -77,28 +113,35 @@
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
         android:layout_marginBottom="100dp"
-        android:ems="10"
-        android:inputType="text"
-        android:hint="@string/status"
-        android:fontFamily="@font/nunito_sans"
-        android:textColor="@color/text_color"
+        app:counterEnabled="true"
+        app:counterMaxLength="30"
+        app:startIconDrawable="@drawable/ic_status"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.51"
-        app:layout_constraintStart_toStartOf="parent"
-        android:autofillHints="" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/insert_status_task"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nunito_sans"
+            android:hint="@string/status"
+            android:inputType="text"
+            android:textColor="@color/text_color" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_save_task"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
         android:layout_marginBottom="24dp"
-        android:focusable="true"
         android:clickable="true"
+        android:contentDescription="@string/todo"
+        android:focusable="true"
         android:src="@drawable/ic_check"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:contentDescription="@string/todo" />
+        app:tint="@color/white" />
 </androidx.constraintlayout.widget.ConstraintLayout>

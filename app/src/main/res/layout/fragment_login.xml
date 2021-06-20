@@ -5,10 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.LoginFragment">
+    tools:context=".ui.fragments.LoginFragment"
+    android:background="@drawable/sunset_surfer_background">
 
-    <EditText
-        android:id="@+id/insert_email_login"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/insert_email_login_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -16,17 +18,27 @@
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
         android:layout_marginBottom="24dp"
-        android:hint="@string/email"
-        android:fontFamily="@font/nunito_sans"
-        android:textColor="@color/text_color"
-        android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@+id/insert_password_login"
+        app:endIconMode="clear_text"
+        app:startIconDrawable="@drawable/ic_user"
+        app:counterEnabled="true"
+        app:counterMaxLength="30"
+        app:layout_constraintBottom_toTopOf="@+id/insert_password_login_layout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:autofillHints="" />
+        app:layout_constraintStart_toStartOf="parent">
 
-    <EditText
-        android:id="@+id/insert_password_login"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/insert_email_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/email"
+            android:fontFamily="@font/nunito_sans"
+            android:textColor="@color/text_color"
+            android:inputType="textEmailAddress"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/insert_password_login_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -34,14 +46,23 @@
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
         android:layout_marginBottom="32dp"
-        android:hint="@string/password"
-        android:fontFamily="@font/nunito_sans"
-        android:textColor="@color/text_color"
-        android:inputType="textPassword"
+        app:startIconDrawable="@drawable/ic_password"
+        app:counterEnabled="true"
+        app:counterMaxLength="30"
+        app:endIconMode="password_toggle"
         app:layout_constraintBottom_toTopOf="@+id/button_login"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:autofillHints="" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/insert_password_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password"
+            android:fontFamily="@font/nunito_sans"
+            android:textColor="@color/text_color"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/button_login"
@@ -55,6 +76,7 @@
         android:text="@string/login_button"
         android:textAllCaps="false"
         android:textSize="20sp"
+        android:background="@drawable/custom_button"
         app:layout_constraintBottom_toTopOf="@+id/text_register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

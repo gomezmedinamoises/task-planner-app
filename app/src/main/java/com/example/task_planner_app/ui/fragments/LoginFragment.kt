@@ -33,16 +33,20 @@ class LoginFragment : Fragment() {
             val email = binding.insertEmailLogin.text.toString()
             val password = binding.insertPasswordLogin.text.toString()
             val loginFieldsValidationResult = validateLoginFields(email, password)
-            if(loginFieldsValidationResult){
+            if (loginFieldsValidationResult) {
                 viewModel.auth(email, password)
+                viewModel.successLiveData.observe(viewLifecycleOwner, { loginSuccessful ->
+                    if (loginSuccessful) {
+                        FancyToast.makeText(activity, "Login success!",
+                            FancyToast.LENGTH_LONG, FancyToast.SUCCESS, true).show()
+                        goMainActivityFromLoginActivity()
+                    }
+                })
             } else {
-                println("Pending fields")
+                FancyToast.makeText(activity, "Please, insert all fields",
+                FancyToast.LENGTH_LONG, FancyToast.ERROR, true).show()
             }
-            viewModel.successLiveData.observe(viewLifecycleOwner, { loginSuccessful ->
-                if (loginSuccessful) {
-                    goMainActivityFromLoginActivity()
-                }
-            })
+
 
         }
 
@@ -84,7 +88,6 @@ class LoginFragment : Fragment() {
                 ).show()
                 return false
             }
-            //else -> true
         }
         return true
     }

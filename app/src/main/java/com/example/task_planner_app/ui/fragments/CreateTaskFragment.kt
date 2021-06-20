@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.task_planner_app.R
 import com.example.task_planner_app.databinding.FragmentCreateTaskBinding
+import com.example.task_planner_app.ui.dialog.DatePickerFragment
 import com.example.task_planner_app.viewmodel.MainActivityViewModel
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,7 +30,10 @@ class CreateTaskFragment : Fragment() {
         binding.fabSaveTask.setOnClickListener {
             val description = binding.insertDescriptionTask.text.toString()
             val responsible = binding.insertResponsibleTask.text.toString()
-            val date = binding.insertDateTask.text.toString()
+            //val date = binding.insertDateTask.text.toString()
+            val date = binding.insertDateTask.setOnClickListener {
+                showDatePickerDialog()
+            }
             val status = binding.insertStatusTask.text.toString()
             validateCreateTaskFields(description, responsible, date, status)
             viewModel.successLiveData.observe(viewLifecycleOwner, {
@@ -40,6 +44,11 @@ class CreateTaskFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun showDatePickerDialog() {
+        val newFragment = DatePickerFragment()
+        activity?.let { newFragment.show(it.supportFragmentManager, "datePicker") }
     }
 
     private fun goHomeFragmentFromCreateTaskFragment() {

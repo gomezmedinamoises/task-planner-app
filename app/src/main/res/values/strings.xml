@@ -21,4 +21,6 @@
     <string name="status">Status</string>
     <string name="delete">Delete</string>
     <string name="update">Update</string>
+    <string name="create_a_task">Create a task!</string>
+    <string name="register_your_user">Register your user!</string>
 </resources>
