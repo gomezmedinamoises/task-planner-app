@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">task-planner-app</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="login_button">Login</string>
     <string name="text_create_account">Do you need an account? Click here</string>
@@ -26,4 +25,9 @@
     <string name="task_list">Task list</string>
     <string name="what_i_must_do">Task:</string>
     <string name="responsible_card">Responsible:</string>
+    <string-array name="status_options">
+        <item>Pending</item>
+        <item>In process</item>
+        <item>Completed</item>
+    </string-array>
 </resources>

@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.task_planner_app.R
@@ -29,6 +32,25 @@ class CreateTaskFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentCreateTaskBinding.inflate(inflater, container, false)
 
+        val statusList = resources.getStringArray(R.array.status_options)
+        var selectedStatus = statusList.first()
+
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, statusList)
+        binding.insertStatusTask.adapter = adapter
+
+        binding.insertStatusTask.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                selectedStatus = statusList[position]
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
         binding.insertDateTask.setOnClickListener {
             showDatePickerDialog()
         }
@@ -37,7 +59,7 @@ class CreateTaskFragment : Fragment() {
             val description = binding.insertDescriptionTask.text.toString()
             val responsible = binding.insertResponsibleTask.text.toString()
             val date = binding.insertDateTask.text.toString()
-            val status = binding.insertStatusTask.text.toString()
+            val status = binding.insertStatusTask.selectedItem.toString()
             validateCreateTaskFields(description, responsible, date, status)
             viewModel.successLiveData.observe(viewLifecycleOwner, {
                 goHomeFragmentFromCreateTaskFragment()
