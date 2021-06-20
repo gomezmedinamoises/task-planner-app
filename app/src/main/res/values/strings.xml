@@ -12,7 +12,7 @@
     <string name="confirm_password">Confirm password</string>
     <string name="button_register">Register</string>
     <string name="text_login">Do you have an account? Click here</string>
-    <string name="text_register">Do you need and account? Click here</string>
+    <string name="text_register">Do you need an account? Click here</string>
     <string name="description">Description </string>
     <string name="todo">TODO</string>
     <string name="create_task">Create task</string>
@@ -23,4 +23,7 @@
     <string name="update">Update</string>
     <string name="create_a_task">Create a task!</string>
     <string name="register_your_user">Register your user!</string>
+    <string name="task_list">Task list</string>
+    <string name="what_i_must_do">Task:</string>
+    <string name="responsible_card">Responsible:</string>
 </resources>

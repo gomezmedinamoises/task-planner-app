@@ -44,7 +44,7 @@
             android:fontFamily="@font/nunito_sans"
             android:gravity="start"
             android:hint="@string/description"
-            android:inputType="text"
+            android:inputType="textMultiLine"
             android:maxLines="5"
             android:textColor="@color/text_color" />
 
@@ -82,24 +82,22 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        app:counterEnabled="true"
-        app:counterMaxLength="30"
-        app:startIconDrawable="@drawable/ic_calendar"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/insert_status_task_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:startIconDrawable="@drawable/ic_calendar">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/insert_date_task"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
             android:fontFamily="@font/nunito_sans"
             android:hint="@string/date"
             android:inputType="date"
-            android:focusable="false"
-            android:clickable="true"
-            android:maxLines="1"
             android:textColor="@color/text_color" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -113,8 +111,6 @@
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
         android:layout_marginBottom="100dp"
-        app:counterEnabled="true"
-        app:counterMaxLength="30"
         app:startIconDrawable="@drawable/ic_status"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

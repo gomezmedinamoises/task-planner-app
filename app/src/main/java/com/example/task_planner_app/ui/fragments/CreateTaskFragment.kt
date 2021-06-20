@@ -13,6 +13,8 @@ import com.example.task_planner_app.ui.dialog.DatePickerFragment
 import com.example.task_planner_app.viewmodel.MainActivityViewModel
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.*
 
 @AndroidEntryPoint
 class CreateTaskFragment : Fragment() {
@@ -27,13 +29,14 @@ class CreateTaskFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentCreateTaskBinding.inflate(inflater, container, false)
 
+        binding.insertDateTask.setOnClickListener {
+            showDatePickerDialog()
+        }
+
         binding.fabSaveTask.setOnClickListener {
             val description = binding.insertDescriptionTask.text.toString()
             val responsible = binding.insertResponsibleTask.text.toString()
-            //val date = binding.insertDateTask.text.toString()
-            val date = binding.insertDateTask.setOnClickListener {
-                showDatePickerDialog()
-            }
+            val date = binding.insertDateTask.text.toString()
             val status = binding.insertStatusTask.text.toString()
             validateCreateTaskFields(description, responsible, date, status)
             viewModel.successLiveData.observe(viewLifecycleOwner, {
@@ -47,8 +50,12 @@ class CreateTaskFragment : Fragment() {
     }
 
     private fun showDatePickerDialog() {
-        val newFragment = DatePickerFragment()
-        activity?.let { newFragment.show(it.supportFragmentManager, "datePicker") }
+        val datePicker = DatePickerFragment { day, month, year -> onDateSelected(day, month, year) }
+        activity?.let { datePicker.show(it.supportFragmentManager, "datePicker") }
+    }
+
+    fun onDateSelected(day: Int, month: Int, year:Int) {
+        binding.insertDateTask.setText("$year/$month/$day")
     }
 
     private fun goHomeFragmentFromCreateTaskFragment() {

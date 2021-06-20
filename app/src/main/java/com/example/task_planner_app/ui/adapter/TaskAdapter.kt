@@ -29,6 +29,7 @@ class TaskAdapter(
             val taskDescription: TextView = view.findViewById(R.id.description_task)
             val taskResponsible: TextView = view.findViewById(R.id.responsible_task)
             val taskStatus: TextView = view.findViewById(R.id.status_task)
+            val taskDate: TextView = view.findViewById(R.id.date_task)
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -43,6 +44,7 @@ class TaskAdapter(
             description_task.text = task.description
             responsible_task.text = task.responsible
             status_task.text = task.status
+            date_task.text = task.date
             button_menu_more.setOnClickListener { view ->
                 setOptionMenuToItem(view, position, task, navController)
             }
